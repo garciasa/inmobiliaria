@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+   <!--start: Wrapper-->
+    <div id="wrapper">
+                
+        <!--start: Container -->
+        <div class="container">            
+
+    	<!-- start: Map -->
+    		<div align='center'>
+
+    			<!-- starts: Google Maps -->
+    	<iframe width="800" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.es/maps?f=q&amp;source=s_q&amp;hl=es&amp;geocode=&amp;q=Avenida+de+la+Vega,8,+Alcobendas&amp;aq=0&amp;oq=Avenida+de+la+Vega,+Alcobendas&amp;sll=40.532459,-3.629436&amp;sspn=0.013536,0.018389&amp;ie=UTF8&amp;hq=&amp;hnear=Av+de+la+Vega,+28108+Alcobendas,+Madrid&amp;t=m&amp;ll=40.532459,-3.629436&amp;spn=0.022832,0.068665&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe><br /><small><a href="https://maps.google.es/maps?f=q&amp;source=embed&amp;hl=es&amp;geocode=&amp;q=Avenida+de+la+Vega,8,+Alcobendas&amp;aq=0&amp;oq=Avenida+de+la+Vega,8,+Alcobendas&amp;sll=40.532459,-3.629436&amp;sspn=0.013536,0.018389&amp;ie=UTF8&amp;hq=&amp;hnear=Av+de+la+Vega,8,+28108+Alcobendas,+Madrid&amp;t=m&amp;ll=40.532459,-3.629436&amp;spn=0.022832,0.068665&amp;z=14&amp;iwloc=A" style="color:#0000FF;text-align:left">Ver mapa más grande</a></small>
+    			<!-- end: Google Maps -->
+    		</div>
+    		<!-- end: Map -->	
+    		
+    		<!-- start: Wrapper -->	
+    		<div id="wrapper">		
+
+    			<!-- start: Container -->	
+    			<div class="container">
+    				
+    				<!-- start: Row -->
+    				<div class="row" >
+    				
+    					<!-- start: Contact Info -->
+    					<div class="span3 offset2 pagination-centered">
+    						<div class="title"><h3>Informaci&oacute;n de Contacto</h3></div>
+    						<p>
+    							<b>Inversiones Inmoviliarias La Moraleja</b>
+    						</p>
+    						<p>
+    							Avenida de la Vega, 8
+    						</p>
+    						<p>
+    							1 - Bajo B
+    						</p>
+    						<p>	
+    							28108 Alcobendas, Madrid
+    						</p>	
+    						<p>	
+    							Tel&eacute;fono: (+34) 91.661.68.84
+    						</p>
+    						<p>
+    							Email: info@invinmolamoraleja.com
+    						</p>
+    						<p>
+    							Web: invinmolamoraleja.com
+    						</p>
+    					</div>
+    					<!-- end: Contact Info -->		
+
+    					<!-- start: Contact Form -->
+    					<div class="span4 offset2">
+    						<div class="title"><h3>Formulario de Contacto</h3></div>
+
+    						<!-- start: Contact Form -->
+    						<div id="contact-form">
+
+    							<form method="post" action="">
+
+    								<fieldset>
+    									<div class="clearfix">
+    										<label for="name"><span>Nombre</span></label>
+    										<div class="input">
+    											<input tabindex="1" size="18" id="name" name="name" type="text" value="">
+    										</div>
+    									</div>
+
+    									<div class="clearfix">
+    										<label for="email"><span>Email:</span></label>
+    										<div class="input">
+    											<input tabindex="2" size="25" id="email" name="email" type="text" value="" class="input-xlarge">
+    										</div>
+    									</div>
+
+    									<div class="clearfix">
+    										<label for="message"><span>Mensaje:</span></label>
+    										<div class="input">
+    											<textarea tabindex="3" class="input-xlarge" id="message" name="body" rows="7"></textarea>
+    										</div>
+    									</div>
+
+    									<div class="actions">
+    										<button tabindex="3" type="submit" class="btn btn-succes btn-large">Enviar Mensaje</button>
+    									</div>
+    								</fieldset>
+
+    							</form>
+
+    						</div>
+    						<!-- end: Contact Form -->
+
+    					</div>
+    					<!-- end: Contact Form -->
+    				</div>
+    			</div>
+    		</div>
+    </div>
+</div>
+
+{% endblock content %}

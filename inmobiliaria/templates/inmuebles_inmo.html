@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- start: Page Title -->
+    <div id="page-title">
+
+        <div id="page-title-inner">
+
+            <!-- start: Container -->
+            <div class="container">
+
+                <h2><i class="ico-home ico-white"></i>Inmuebles</h2>
+
+            </div>
+            <!-- end: Container  -->
+
+        </div>  
+
+    </div>
+    <!-- end: Page Title -->
+    
+    <!--start: Wrapper-->
+    <div id="wrapper">
+                
+        <!--start: Container -->
+        <div class="container-fluid">
+    
+            <!--start: Row -->
+            <div class="row-fluid">
+        
+                <div class="span2">
+                     <form method="POST" action="{% url 'inmuebles' %}">
+                        {% csrf_token %}
+                        {% for f in form %}
+                            {{ f.label }}:{{ f }}
+                        {% endfor %}
+                        <div id="slider-range"></div>
+                        <br>
+                        <input type="submit" value="Filtrar">
+                    </form>
+                </div>   
+                
+                <div class="span10">
+                    <div class="span3 offset1">
+                        <div class="picture">
+                            <a href="project.html" title="Title">
+                                <img src="/static/img/foto1.jpg" alt=""/>
+                                <div class="image-overlay-link"></div>
+                            </a>
+                            <div class="item-description alt">
+                                <h4><a href="project.html">Chalet Adosado</a></h4>
+                                <p>
+                                    <ul>
+                                        <li>Provincia: Madrid</li>    
+                                        <li>Localidad: Aravaca</li>
+                                        <li>Zona: Mirador del Hipodromo</li>
+                                        <li>Tipo: Alquiler</li>
+                                        <li>Metros: 400 m2</li>
+                                        <li>Dormitorios: 4 Dormitorios</li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="post-meta">
+                                <span><i class="mini-ico-calendar"></i>1 Dic 2012</span>
+                                <span><i class="mini-ico-eye-open"></i>89 Visitas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="span3">
+                        <div class="picture">
+                            <a href="project.html" title="Title">
+                                <img src="/static/img/foto22.jpg" alt=""/>
+                                <div class="image-overlay-link"></div>
+                            </a>
+                            <div class="item-description alt">
+                                <h4><a href="project.html">Chalet Adosado</a></h4>
+                                <p>
+                                    <ul>
+                                        <li>Provincia: Madrid</li>    
+                                        <li>Localidad: Niidea</li>
+                                        <li>Zona: Tamaral I</li>
+                                        <li>Tipo: Alquiler</li>
+                                        <li>Metros: 280 m2</li>
+                                        <li>Dormitorios: 4 Dormitorios</li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="post-meta">
+                                <span><i class="mini-ico-calendar"></i>1 Oct 2012</span>
+                                <span><i class="mini-ico-eye-open"></i>189 Visitas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span3">
+                        <div class="picture">
+                            <a href="project.html" title="Title">
+                                <img src="/static/img/foto1.jpg" alt=""/>
+                                <div class="image-overlay-link"></div>
+                            </a>
+                            <div class="item-description alt">
+                                <h4><a href="project.html">Chalet Adosado</a></h4>
+                                <p>
+                                    <ul>
+                                        <li>Provincia: Madrid</li>    
+                                        <li>Localidad: Aravaca</li>
+                                        <li>Tipo: Alquiler</li>
+                                        <li>Zona: Mirador del Hipodromo</li>
+                                        <li>Metros: 400 m2</li>
+                                        <li>Dormitorios: 4 Dormitorios</li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="post-meta">
+                                <span><i class="mini-ico-calendar"></i>1 Sep 2012</span>
+                                <span><i class="mini-ico-eye-open"></i>99 Visitas</span>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <!--end: Row-->
+            
+            <div class="row">
+                <div class="span10 offset3">
+                    <ul class="pagination">
+                        <a href="#"><li class="current">1</li></a>
+                        <a href="#"><li>2</li></a>
+                        <a href="#"><li>3</li></a>
+                        <a href="#"><li>4</li></a>
+                        <a href="#"><li>5</li></a>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!--end: Container-->
+    </div>
+    <!-- end: Wrapper  -->          
+
+{% endblock content %}
+
+
+{% block tail_script %}
+<script>
+$(function() {
+    $( "#slider-range" ).slider({
+      range: 'min',
+      value: 2,
+      min: 1,
+      max: 6,
+      slide: function( event, ui ) {
+        $("#id_habitaciones").val(ui.value);
+      }
+    });
+    $("#id_habitaciones").val($("#slider-range").slider("value") );
+    $('#slider-range').width(170);  
+  });
+</script>
+{% endblock tail_script%}
