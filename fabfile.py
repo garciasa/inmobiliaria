@@ -2,6 +2,7 @@ from fabric.api import *
 
 env.supervisorapp = 'inmobiliaria'
 env.localfolder = '***REMOVED***'
+env.key_filename = '***REMOVED***'
 env.hosts = ['***REMOVED***']
 env.remotedir = '/home/ubuntu/inmoviliaria/inmobiliaria'
 env.activate = 'source /home/ubuntu/inmoviliaria/bin/activate'
