@@ -21,4 +21,7 @@ urlpatterns = patterns('',
     url(r'^compra','inmobiliaria.views.compra',name='compra'),
     url(r'^inmuebles','inmobiliaria.views.inmuebles',name='inmuebles'),
     url(r'^contacto','inmobiliaria.views.contacto',name='contacto'),
+    url(r'^private/add','inmobiliaria.views.addInmueble',name='addInmueble'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/logout/$', 'inmobiliaria.views.logout_page'),
 )

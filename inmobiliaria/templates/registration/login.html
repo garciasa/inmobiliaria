@@ -1,0 +1,84 @@
+{% extends "admin/base.html" %}
+{% comment %}
+
+Login page to authenticate users.
+
+{% endcomment %}
+
+{% block title %}
+Login
+{% endblock %}
+{% block head_script %}
+    <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
+      }
+      body {
+        padding-top: 40px; 
+      }
+      .container {
+        width: 300px;
+      }
+
+      /* The white background content wrapper */
+      .container > .content {
+        background-color: #fff;
+        padding: 20px;
+        margin: 0 -20px; 
+        -webkit-border-radius: 10px 10px 10px 10px;
+           -moz-border-radius: 10px 10px 10px 10px;
+                border-radius: 10px 10px 10px 10px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+      .login-form {
+        margin-left: 65px;
+      }
+    
+      legend {
+        margin-right: -50px;
+        font-weight: bold;
+        color: #404040;
+      }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="content">
+      <div class="row">
+        <div class="login-form">
+            <form method="post" action="." class="form-signin">{% csrf_token %}
+            <legend>Identificaci&oacute;n</legend>
+            <fieldset>
+                <div class="clearfix">
+                    <label for="id_username">Usuario:</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="clearfix">
+                    <label for="id_password">Contraseña:</label>
+                    {{ form.password }}
+                </div>
+                {% if form.errors %}
+                    <p class="text-error">Su usuario y contraseña no son válidos. Por favor, intentelo de nuevo.</p>
+                {% endif %}
+
+                {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}" />
+                {% else %}
+                    <input type="hidden" name="next" value="/" />
+                {% endif %}
+                <input type="submit" class="btn btn-primary" value="Entrar" />
+            </fieldset>
+        </form>
+        </div>
+      </div>
+    </div>
+</div> <!-- /container -->
+{% endblock %}
