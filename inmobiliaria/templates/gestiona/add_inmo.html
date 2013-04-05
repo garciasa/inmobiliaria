@@ -56,7 +56,20 @@
     </div>
 
 
-    <div class="container">    
+    <div class="container"> 
+    {% if respuesta == 'ok' %}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        La operacion se ha realizado correctamente, puede añadir más si quiere...
+
+    </div>
+    {% endif %} 
+        {% if inmueble_form.errors %}
+            <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                El formulario contiene errores...
+            </div>
+        {% endif %} 
         <form enctype="multipart/form-data" method="post" class="form-horizontal" action="{% url 'addInmueble' %}">{% csrf_token %}
                     {{ inmueble_form.non_field_errors }}
         <fieldset>
@@ -91,6 +104,7 @@
                         </div>
                         <fieldset>
                              <legend>
+
                                 Imagenes del Inmueble
                                 <span id="boton_addimage">
                                     <a id="add" class="btn btn-success" href="#">

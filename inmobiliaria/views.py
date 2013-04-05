@@ -75,10 +75,12 @@ def addInmueble(request):
             super(RequiredFormSet, self).__init__(*args, **kwargs)
             for form in self.forms:
                 form.empty_permitted = False
-    
-    ImageFormSet = formset_factory(ImageForm, max_num=5, formset=RequiredFormSet)
+   
     if request.method == 'POST':
         #Guardamos todo esto...
+        
+        ImageFormSet = formset_factory(ImageForm, max_num=5, formset=RequiredFormSet)
+
         inmuebleForm = AddForm(request.POST)
         imageFormSet = ImageFormSet(request.POST, request.FILES)
         
@@ -100,17 +102,21 @@ def addInmueble(request):
             inmuebleForm = AddForm();
             data = {'inmueble_form':inmuebleForm,
              'image_formset':ImageFormSet,
+             'respuesta' : 'ok',
              }        
             data.update(csrf(request))
             return render_to_response('gestiona/add_inmo.html',data)  
         else:
-            data = {'inmueble_form':inmuebleForm,
-                 'image_formset':ImageFormSet,
-                }
+            data = {
+                    'inmueble_form':inmuebleForm,
+                    'image_formset':imageFormSet,
+                    }
     else:
         inmuebleForm = AddForm();
+        imageFormSet = formset_factory(ImageForm, max_num=5, formset=RequiredFormSet)
         data = {'inmueble_form':inmuebleForm,
-             'image_formset':ImageFormSet,
+             'image_formset':imageFormSet,
+             'respuesta' : '',
              }
         
     data.update(csrf(request))
