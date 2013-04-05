@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 
-CHOICES_SEARCH = ((1,'Alquiler'),(2,'Venta'))
+CHOICES_SEARCH = (('A','Alquiler'),('V','Venta'))
 CHOICES_PROVINCIA = ((1,'Madrid'),(2,'Otros'))
 
 class SearchForm(forms.Form):
@@ -26,4 +26,4 @@ class AddForm(forms.Form):
 
 class ImageForm(forms.Form):
     descripcion = forms.CharField(label='Descripcion', required=True)
-    fichero = forms.FileField(label='Foto', required=True)
+    fichero = forms.ImageField(label='Foto', required=True)

@@ -9,7 +9,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('nio', '***REMOVED***@gmail.com'),
+    ('***REMOVED***', '***REMOVED***@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -138,10 +138,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'inmobiliaria',
+    'django_admin_bootstrapped',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    # 'django.contrib.admindocs'
 )
 
 # A sample logging configuration. The only tangible logging

@@ -41,95 +41,60 @@
                 </div>   
                 
                 <div class="span10">
-                    <div class="span3 offset1">
-                        <div class="picture">
-                            <a href="project.html" title="Title">
-                                <img src="/static/img/foto1.jpg" alt=""/>
-                                <div class="image-overlay-link"></div>
-                            </a>
-                            <div class="item-description alt">
-                                <h4><a href="project.html">Chalet Adosado</a></h4>
-                                <p>
-                                    <ul>
-                                        <li>Provincia: Madrid</li>    
-                                        <li>Localidad: Aravaca</li>
-                                        <li>Zona: Mirador del Hipodromo</li>
-                                        <li>Tipo: Alquiler</li>
-                                        <li>Metros: 400 m2</li>
-                                        <li>Dormitorios: 4 Dormitorios</li>
-                                    </ul>
-                                </p>
-                            </div>
-                            <div class="post-meta">
-                                <span><i class="mini-ico-calendar"></i>1 Dic 2012</span>
-                                <span><i class="mini-ico-eye-open"></i>89 Visitas</span>
-                            </div>
-                        </div>
-                    </div>
-
                     
+                    {%for c in casas%}
 
-                    <div class="span3">
+
+                    <div class="span3 {%if forloop.counter0 == 0%}offset1{%endif%}">
                         <div class="picture">
-                            <a href="project.html" title="Title">
-                                <img src="/static/img/foto22.jpg" alt=""/>
+                            <a href="{% url 'inmuebles' c.id %}" title="Title">
+                                {% with c.imagen_set.all|first as image %}
+                                    <img src="{{ image.ruta|add:image.nombre }}-thumbnail.png" />
+                                {% endwith %}
                                 <div class="image-overlay-link"></div>
                             </a>
                             <div class="item-description alt">
-                                <h4><a href="project.html">Chalet Adosado</a></h4>
+                                <h4><a href="{% url 'inmuebles' c.id %}">{{c.descripcion}}</a></h4>
                                 <p>
+                                        {% if c.tipo == 'A'%}
+                                            <h2>Alquiler</h2>
+                                        {% else %}
+                                            <h2>Venta</h2>
+                                        {%endif%}
                                     <ul>
-                                        <li>Provincia: Madrid</li>    
-                                        <li>Localidad: Niidea</li>
-                                        <li>Zona: Tamaral I</li>
-                                        <li>Tipo: Alquiler</li>
-                                        <li>Metros: 280 m2</li>
-                                        <li>Dormitorios: 4 Dormitorios</li>
+                                        <li>Provincia: {{c.provincia}}</li>    
+                                        <li>Localidad: {{c.localidad}}</li>
+                                        <li>Zona: {{c.zona}}</li>
+                                        <li>Metros: {{c.metros_casa}} m2</li>
+                                        <li>Dormitorios: {{c.habitaciones}}</li>
                                     </ul>
                                 </p>
                             </div>
                             <div class="post-meta">
-                                <span><i class="mini-ico-calendar"></i>1 Oct 2012</span>
-                                <span><i class="mini-ico-eye-open"></i>189 Visitas</span>
+                                <span><i class="mini-ico-calendar"></i>{{c.fecha_insert|date:'d/m/Y'}}</span>
+                                <span><i class="mini-ico-eye-open"></i>{{c.visitas}} Visitas</span>
                             </div>
                         </div>
                     </div>
-                    <div class="span3">
-                        <div class="picture">
-                            <a href="project.html" title="Title">
-                                <img src="/static/img/foto1.jpg" alt=""/>
-                                <div class="image-overlay-link"></div>
-                            </a>
-                            <div class="item-description alt">
-                                <h4><a href="project.html">Chalet Adosado</a></h4>
-                                <p>
-                                    <ul>
-                                        <li>Provincia: Madrid</li>    
-                                        <li>Localidad: Aravaca</li>
-                                        <li>Tipo: Alquiler</li>
-                                        <li>Zona: Mirador del Hipodromo</li>
-                                        <li>Metros: 400 m2</li>
-                                        <li>Dormitorios: 4 Dormitorios</li>
-                                    </ul>
-                                </p>
-                            </div>
-                            <div class="post-meta">
-                                <span><i class="mini-ico-calendar"></i>1 Sep 2012</span>
-                                <span><i class="mini-ico-eye-open"></i>99 Visitas</span>
-                            </div>
-                        </div>
-                    </div>
+
+                    {% endfor %}
             </div>
             <!--end: Row-->
             
             <div class="row">
                 <div class="span10 offset3">
                     <ul class="pagination">
-                        <a href="#"><li class="current">1</li></a>
-                        <a href="#"><li>2</li></a>
-                        <a href="#"><li>3</li></a>
-                        <a href="#"><li>4</li></a>
-                        <a href="#"><li>5</li></a>
+                        {% if casas.has_previous %}
+                            <a href="?page={{ casas.previous_page_number }}"><li>Anterior</li></a>
+                        {% endif %}
+
+                        <li class="current">
+                            P&aacute;gina {{ casas.number }} de {{ casas.paginator.num_pages }}
+                        </li>
+
+                        {% if casas.has_next %}
+                            <a href="?page={{ casas.next_page_number }}"><li>Siguiente</li></a>
+                        {% endif %}
 
                     </ul>
                 </div>

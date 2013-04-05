@@ -1,4 +1,5 @@
 import datetime
+import random
 from django.db import models
 
 
@@ -21,6 +22,7 @@ class Inmueble(models.Model):
     metros_jardin = models.IntegerField()
     contenido = models.CharField(max_length=250)
     activo = models.BooleanField()
+    visitas = models.IntegerField()
 
     def __unicode__(self):
         return u'%s - %s' % (self.id, self.descripcion)
@@ -39,6 +41,7 @@ class Inmueble(models.Model):
                 metros_jardin=form.cleaned_data['metros_jardin'],
                 contenido=form.cleaned_data['contenido'],
                 activo=form.cleaned_data['activo'],
+                visitas = random.randrange(1,43),
                 )
 
 class Imagen(models.Model):

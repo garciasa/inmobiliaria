@@ -1,0 +1,163 @@
+{% extends "gestiona/base.html" %}
+
+{% block head_script %}
+<style type="text/css">
+    label { 
+        display: block; 
+        width: 150px;
+        margin-top: 5px; 
+    }
+    #id_contenido {
+        width: 500px;
+        height: 200px;
+    }
+    #id_descripcion{
+        width: 500px;
+    }
+    #id_titulo{
+        width: 500px;
+    }
+    #boton_addimage{
+        margin-left: 10px;
+    }
+    input[id^='id_form']{
+        width:400px;
+    }
+
+    .errorlist{ color:red;}
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Panel Administraci&oacute;n</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Acciones<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">A&ntilde;adir Casa</a></li>
+                  <li><a href="#">Borrar Casa</a></li>
+                  <li><a href="#">Listar Casas</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">    
+        <form enctype="multipart/form-data" method="post" class="form-horizontal" action="{% url 'addInmueble' %}">{% csrf_token %}
+                    {{ inmueble_form.non_field_errors }}
+        <fieldset>
+            <legend>Alta Inmueble</legend>        
+            <div class="row">
+                    <div class="span6">                        
+
+                        <div class="clearfix">
+                            {{ inmueble_form.tipo.errors }}
+                            <label for="id_tipo">Tipo:</label>
+                            {{ inmueble_form.tipo }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.provincia.errors }}
+                            <label for="id_provincia">Provincia:</label>
+                            {{ inmueble_form.provincia }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.localidad.errors }}
+                            <label for="id_localidad">Localidad:</label>
+                            {{ inmueble_form.localidad }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.zona.errors }}
+                            <label for="id_zona">Zona:</label>
+                            {{ inmueble_form.zona }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.activo.errors }}
+                            <label for="id_activo">Visible:</label>
+                            {{ inmueble_form.activo }}
+                        </div>
+                        <fieldset>
+                             <legend>
+                                Imagenes del Inmueble
+                                <span id="boton_addimage">
+                                    <a id="add" class="btn btn-success" href="#">
+                                        <i class="icon-plus-sign icon-white"></i>
+                                            A&ntilde;adir mas fotos
+                                    </a>
+                                </span>
+                             </legend>
+                                {{ image_formset.management_form }} 
+                                {% for form in image_formset.forms %}
+                                <div class="item">
+                                    {{form.as_p}}
+                                    <p><a class="delete btn btn-danger" href="#"><i class="icon-trash icon-white"></i> Borrar</a></p>
+                                </div>
+                                {% endfor %}
+                        </fieldset>
+
+                    </div>
+                    <div class="span6">
+                        <div class="clearfix">
+                            {{ inmueble_form.titulo.errors }}
+                            <label for="id_titulo">Titulo:</label>
+                            {{ inmueble_form.titulo }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.descripcion.errors }}
+                            <label for="id_descripcion">Descripcion pequeña:</label>
+                            {{ inmueble_form.descripcion }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.metros_casa.errors }}
+                            <label for="id_metros_casa">Metros Casa:</label>
+                            {{ inmueble_form.metros_casa }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.metros_jardin.errors }}
+                            <label for="id_metros_jardin">Metros Jardin:</label>
+                            {{ inmueble_form.metros_jardin }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.habitaciones.errors }}
+                            <label for="id_habitaciones">Habitaciones:</label>
+                            {{ inmueble_form.habitaciones }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.banos.errors }}
+                            <label for="id_banos">Baños:</label>
+                            {{ inmueble_form.banos }}
+                        </div>
+                        <div class="clearfix">
+                            {{ inmueble_form.contenido.errors }}
+                            <label for="id_contenido">Descripcion grande:</label>
+                            {{ inmueble_form.contenido }}
+                        </div>
+                        <hr>
+                        <div class="clearfix">
+                            <input type="submit" class="btn btn-primary btn-large btn-succes" value="Guardar Inmueble">
+                            <input type="reset" class="btn btn-primary btn-large btn-succes" value="Limpiar">
+                        </div>
+                    </div>
+                </div> <!--row-->
+        </fieldset>
+        </form>
+    </div>
+
+{% endblock content %}
+
+{% block tail_script %}
+<script src="/static/js/app/addImage.js"></script>
+{% endblock %}
