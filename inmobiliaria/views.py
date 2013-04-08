@@ -51,13 +51,18 @@ def descripcion_inmueble(request,id):
     if request.method == 'GET':
         logger.debug(id)
         try:
-            c = Inmueble.objects.get(pk=id)
+            casa = Inmueble.objects.get(pk=id)
         except Inmueble.DoesNotExist:
-            c = None
+            casa = None
         
-        if c:            
+        if casa:  
+            form = SearchForm();     
+            imagenes = casa.imagen_set.all()        
             #aqui tenemos que mandar a la vista correspondiente para mostrar la casa con todos los datos... 
-            return render_to_response('home_inmo.html',context_instance=RequestContext(request))
+            return render_to_response('detail_inmo.html',
+                    {'form':form,
+                     'casa':casa,
+                     'imagenes':imagenes},context_instance=RequestContext(request))
         else:
             return inmuebles(request)
 
@@ -144,7 +149,7 @@ def manage_file(f,_id,_cont):
     image.save(ruta+nombreThumb,'PNG',optimized=True)  
 
     logger.debug('Guardando fichero....')
-    return ('static/img/casas/',nombre)
+    return ('/static/img/casas/',nombre)
 
 def add_watermark(image, text,angle=23,opacity=0.5):
     from PIL import Image, ImageDraw, ImageFont, ImageEnhance

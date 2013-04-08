@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block head_script %}
+<link type="text/css" href="/static/css/gallery/base.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+    <!-- start: Page Title -->
+    <div id="page-title">
+
+        <div id="page-title-inner">
+
+            <!-- start: Container -->
+            <div class="container">
+
+                <h2><i class="ico-home ico-white"></i>Inmuebles</h2>
+
+            </div>
+            <!-- end: Container  -->
+
+        </div>  
+
+    </div>
+    <!-- end: Page Title -->
+    
+    <!--start: Wrapper-->
+    <div id="wrapper">
+                
+        <!--start: Container -->
+        <div class="container">
+    
+            <!--start: Row -->
+            <div class="row">
+        
+                <div class="span3">
+                     <form method="POST" action="{% url 'inmuebles' %}">
+                        {% csrf_token %}
+                        {% for f in form %}
+                            {{ f.label }}<br>{{ f }}<br>
+                        {% endfor %}
+                        <div id="slider-range"></div>
+                        <br>
+                        <input type="submit" value="Filtrar">
+                    </form>
+                </div>   
+  
+
+                <div class="span8">
+                    <div class="row">
+                        <div class="span8">
+                            <div class="row">
+                                    <ul id="pikame">
+                                    {% for imagen in imagenes%}
+                                                <li>
+                                                    <img src="{{ imagen.ruta|add:imagen.nombre }}.png" />
+                                                    <span>{{imagen.descripcion}}</span>
+                                                </li>
+                                    {% endfor %}
+                                    </ul>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="span4">
+                                        {% if casa.tipo == 'A'%}
+                                            <h2><strong>Alquiler</strong></h2>
+                                        {% else %}
+                                            <h2><strong>Venta</strong></h2>
+                                        {%endif%}
+                                    <ul>
+                                        <li><em>{{casa.descripcion}}</em></li>
+                                        <li>Provincia: {{casa.provincia}}</li>    
+                                        <li>Localidad: {{casa.localidad}}</li>
+                                        <li>Zona: {{casa.zona}}</li>
+                                        <li>Metros: {{casa.metros_casa}} m2</li>
+                                        <li>Dormitorios: {{casa.habitaciones}}</li>
+                                    </ul>
+                                </div>
+
+                                <div class="span4">
+                                    <br>        
+                                    {{casa.contenido}}
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>                 
+                </div>
+            
+
+            </div>
+            <!--end: Row-->
+            
+        </div>
+        <!--end: Container-->
+    </div>
+    <!-- end: Wrapper  -->          
+
+{% endblock content %}
+
+
+{% block tail_script %}
+<script type="text/javascript" src="/static/js/jquery.jcarousel.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.pikachoose.js"></script>
+<script>
+$(document).ready(
+                function (){
+    $( "#slider-range" ).slider({
+      range: 'min',
+      value: 2,
+      min: 1,
+      max: 6,
+      slide: function( event, ui ) {
+        $("#id_habitaciones").val(ui.value);
+      }
+    });
+    $("#id_habitaciones").val($("#slider-range").slider("value") );
+    $('#slider-range').width(170);  
+
+    $("#pikame").PikaChoose();
+  });
+
+</script>
+{% endblock tail_script%}
