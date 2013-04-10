@@ -18,12 +18,17 @@ class AddForm(forms.Form):
     zona = forms.CharField(label='Zona', required=True)
     descripcion = forms.CharField(label='Titulo', required=True)
     metros_casa = forms.IntegerField(label='Metros', required=True)
-    metros_jardin = forms.IntegerField(label='Metros Jardin')
     habitaciones = forms.IntegerField(label='Habitaciones', required=True)
     banos = forms.IntegerField(label='Baños',required=True)
     contenido = forms.CharField(label='Descripcion', widget=forms.Textarea, required=True)
+    precio = forms.IntegerField(label='Precio',min_value=0, max_value=999999999, required=True)
     activo = forms.BooleanField(label='Activo', initial='True')
 
 class ImageForm(forms.Form):
     descripcion = forms.CharField(label='Descripcion', required=True)
     fichero = forms.ImageField(label='Foto', required=True)
+
+class ContactForm(forms.Form):
+    nombre = forms.CharField(required=True)
+    email = forms.EmailField(min_length=6,required=True)
+    mensaje = forms.CharField(widget=forms.Textarea,required=True)

@@ -1,9 +1,23 @@
 {% extends "base.html" %}
 
+{% block head_script %}
+<style type="text/css">
+    #id_email{
+        width: 250px;
+    }
+
+    #id_mensaje{
+        width: 250px;
+    }
+
+    .errorlist{ color:red;}
+</style>
+{% endblock %}
+
 {% block content %}
    <!--start: Wrapper-->
     <div id="wrapper">
-                
+              
         <!--start: Container -->
         <div class="container">            
 
@@ -24,7 +38,14 @@
     				
     				<!-- start: Row -->
     				<div class="row" >
-    				
+                        <div class="span8 offset2 pagination-centered">
+                            {% if respuesta == 'ok' %}
+                            <div class="alert alert-success">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                El correo se ha enviado correctamente...
+                            </div>
+                            {% endif %} 
+                        </div>    				
     					<!-- start: Contact Info -->
     					<div class="span3 offset2 pagination-centered">
     						<div class="title"><h3>Informaci&oacute;n de Contacto</h3></div>
@@ -55,32 +76,27 @@
     					<!-- start: Contact Form -->
     					<div class="span4 offset2">
     						<div class="title"><h3>Formulario de Contacto</h3></div>
-
     						<!-- start: Contact Form -->
     						<div id="contact-form">
-
-    							<form method="post" action="">
+    							<form method="post" action="{%url 'contacto'%}">{% csrf_token %}
 
     								<fieldset>
     									<div class="clearfix">
-    										<label for="name"><span>Nombre</span></label>
-    										<div class="input">
-    											<input tabindex="1" size="18" id="name" name="name" type="text" value="">
-    										</div>
+                                            {{ form.nombre.errors }}
+                                            <label for="id_nombre">Nombre:</label>
+                                            {{ form.nombre }}
     									</div>
 
     									<div class="clearfix">
-    										<label for="email"><span>Email:</span></label>
-    										<div class="input">
-    											<input tabindex="2" size="25" id="email" name="email" type="text" value="" class="input-xlarge">
-    										</div>
+                                            {{ form.email.errors }}
+                                            <label for="id_email">Email:</label>
+                                            {{ form.email }}
     									</div>
 
     									<div class="clearfix">
-    										<label for="message"><span>Mensaje:</span></label>
-    										<div class="input">
-    											<textarea tabindex="3" class="input-xlarge" id="message" name="body" rows="7"></textarea>
-    										</div>
+                                            {{ form.mensaje.errors }}
+                                            <label for="id_mensaje">Mensaje:</label>
+                                            {{ form.mensaje }}
     									</div>
 
     									<div class="actions">

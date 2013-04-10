@@ -7,11 +7,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import send_mail
 from django.template import RequestContext
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from inmobiliaria.forms import SearchForm, AddForm, ImageForm
+from inmobiliaria.forms import SearchForm, AddForm, ImageForm, ContactForm
 from inmobiliaria.models import Inmueble, Imagen
 
 logger = logging.getLogger('django')
@@ -57,7 +58,9 @@ def descripcion_inmueble(request,id):
         
         if casa:  
             form = SearchForm();     
-            imagenes = casa.imagen_set.all()        
+            imagenes = casa.imagen_set.all()    
+            casa.visitas +=1
+            casa.save()    
             #aqui tenemos que mandar a la vista correspondiente para mostrar la casa con todos los datos... 
             return render_to_response('detail_inmo.html',
                     {'form':form,
@@ -69,9 +72,27 @@ def descripcion_inmueble(request,id):
 
 
 def contacto(request):
-    return render_to_response('contact_inmo.html',context_instance=RequestContext(request))
+    
+    respuesta = 'nok'
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            #Enviamos correo
+            respuesta = 'ok'
+            #Limpiamos el form
+            form = ContactForm();
+            #send_mail('Contacto a traves de la Web', 'Aqui el cuerpo...', 'contacto@inversioneslamoraleja.com',
+            #['agarcia@cittec.es'], fail_silently=False)
+    else:
+        form = ContactForm()
 
-@login_required
+    data = {'form':form,
+            'respuesta':respuesta}
+    data.update(csrf(request))
+    return render_to_response('contact_inmo.html',data,context_instance=RequestContext(request))
+
+
+@login_required(login_url='/private/login/')
 def addInmueble(request):
     # This class is used to make empty formset forms required
     # See http://stackoverflow.com/questions/2406537/django-formsets-make-first-required/4951032#4951032
@@ -125,7 +146,7 @@ def addInmueble(request):
              }
         
     data.update(csrf(request))
-    return render_to_response('gestiona/add_inmo.html',data)
+    return render_to_response('gestiona/add_inmo.html',data,context_instance=RequestContext(request))
 
 def manage_file(f,_id,_cont):
     ''' Guardamos archivo

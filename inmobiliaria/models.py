@@ -19,10 +19,11 @@ class Inmueble(models.Model):
     banos = models.IntegerField()
     habitaciones = models.IntegerField()
     metros_casa = models.IntegerField()
-    metros_jardin = models.IntegerField()
     contenido = models.CharField(max_length=250)
+    precio = models.PositiveIntegerField()
     activo = models.BooleanField()
     visitas = models.IntegerField()
+
 
     def __unicode__(self):
         return u'%s - %s' % (self.id, self.descripcion)
@@ -38,8 +39,8 @@ class Inmueble(models.Model):
                 banos=form.cleaned_data['banos'],
                 habitaciones=form.cleaned_data['habitaciones'],
                 metros_casa=form.cleaned_data['metros_casa'],
-                metros_jardin=form.cleaned_data['metros_jardin'],
                 contenido=form.cleaned_data['contenido'],
+                precio = form.cleaned_data['precio'],
                 activo=form.cleaned_data['activo'],
                 visitas = random.randrange(1,43),
                 )

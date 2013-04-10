@@ -30,14 +30,14 @@
 
 {% block content %}
 
-    <div class="navbar">
+    <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
+          </a>
           <a class="brand" href="#">Panel Administraci&oacute;n</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
@@ -51,6 +51,16 @@
               </li>
             </ul>
           </div><!--/.nav-collapse -->
+          <div class="nav-collapse collapse pull-right ">
+            <ul class="nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bienvenido/a, <strong>{{request.user}}</strong><b class="caret"></b></a>
+                <ul class="dropdown-menu pull-right">
+                  <li><a href="{% url 'logout' %}">Terminar sesion</a></li>            
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->          
         </div>
       </div>
     </div>
@@ -98,6 +108,11 @@
                             {{ inmueble_form.zona }}
                         </div>
                         <div class="clearfix">
+                            {{ inmueble_form.precio.errors }}
+                            <label for="id_precio">Precio:</label>
+                            {{ inmueble_form.precio }}
+                        </div>
+                        <div class="clearfix">
                             {{ inmueble_form.activo.errors }}
                             <label for="id_activo">Visible:</label>
                             {{ inmueble_form.activo }}
@@ -138,11 +153,6 @@
                             {{ inmueble_form.metros_casa.errors }}
                             <label for="id_metros_casa">Metros Casa:</label>
                             {{ inmueble_form.metros_casa }}
-                        </div>
-                        <div class="clearfix">
-                            {{ inmueble_form.metros_jardin.errors }}
-                            <label for="id_metros_jardin">Metros Jardin:</label>
-                            {{ inmueble_form.metros_jardin }}
                         </div>
                         <div class="clearfix">
                             {{ inmueble_form.habitaciones.errors }}

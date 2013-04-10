@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block head_script %}
 <link type="text/css" href="/static/css/gallery/base.css" rel="stylesheet" />
@@ -33,7 +34,7 @@
             <div class="row">
         
                 <div class="span3">
-                     <form method="POST" action="{% url 'inmuebles' %}">
+                     <form method="POST" id="searchform" action="{% url 'inmuebles' %}">
                         {% csrf_token %}
                         {% for f in form %}
                             {{ f.label }}<br>{{ f }}<br>
@@ -60,25 +61,31 @@
                             </div>
                             <br>
                             <div class="row">
-                                <div class="span4">
+                                <div class="span3">
                                         {% if casa.tipo == 'A'%}
                                             <h2><strong>Alquiler</strong></h2>
                                         {% else %}
                                             <h2><strong>Venta</strong></h2>
                                         {%endif%}
                                     <ul>
-                                        <li><em>{{casa.descripcion}}</em></li>
-                                        <li>Provincia: {{casa.provincia}}</li>    
-                                        <li>Localidad: {{casa.localidad}}</li>
-                                        <li>Zona: {{casa.zona}}</li>
-                                        <li>Metros: {{casa.metros_casa}} m2</li>
-                                        <li>Dormitorios: {{casa.habitaciones}}</li>
+                                        <li><h2><em>{{casa.descripcion}}</em></h2></li>
+                                        <li><strong>Provincia:</strong> {% if casa.provincia == '1' %}Madrid{%else%}Otra{%endif%}</li>    
+                                        <li><strong>Localidad:</strong> {{casa.localidad}}</li>
+                                        <li><strong>Zona: </strong> {{casa.zona}}</li>
+                                        <li><strong>Metros:</strong> {{casa.metros_casa}} m2</li>
+                                        <li><strong>Dormitorios:</strong> {{casa.habitaciones}}</li>
+                                        <li><strong>Precio:</strong> {{casa.precio|intcomma}}
+                                             {%if casa.tipo == 'A'%}&euro;/mes
+                                             {%else%}
+                                                &euro;
+                                             {%endif%}
+                                        </li>
                                     </ul>
                                 </div>
 
-                                <div class="span4">
+                                <div class="span5">
                                     <br>        
-                                    {{casa.contenido}}
+                                    {{casa.contenido|linebreaks}}
                                 </div>
 
                             </div>
@@ -118,6 +125,10 @@ $(document).ready(
     $('#slider-range').width(170);  
 
     $("#pikame").PikaChoose();
+    $('#searchform').submit(function(){
+        alert('Deshabilitado de momento.\nDisculpe las molestias.')
+        return false;
+    });  
   });
 
 </script>

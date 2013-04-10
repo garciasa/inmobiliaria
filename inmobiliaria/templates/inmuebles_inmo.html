@@ -29,7 +29,7 @@
             <div class="row-fluid">
         
                 <div class="span2">
-                     <form method="POST" action="{% url 'inmuebles' %}">
+                     <form method="POST" id="searchform" action="{% url 'inmuebles' %}">
                         {% csrf_token %}
                         {% for f in form %}
                             {{ f.label }}:{{ f }}
@@ -62,7 +62,7 @@
                                             <h2>Venta</h2>
                                         {%endif%}
                                     <ul>
-                                        <li>Provincia: {{c.provincia}}</li>    
+                                        <li>Provincia: {% if c.provincia == '1' %}Madrid{%else%}Otra{%endif%}</li>    
                                         <li>Localidad: {{c.localidad}}</li>
                                         <li>Zona: {{c.zona}}</li>
                                         <li>Metros: {{c.metros_casa}} m2</li>
@@ -110,7 +110,8 @@
 
 {% block tail_script %}
 <script>
-$(function() {
+$(document).ready(
+    function (){
     $( "#slider-range" ).slider({
       range: 'min',
       value: 2,
@@ -121,7 +122,11 @@ $(function() {
       }
     });
     $("#id_habitaciones").val($("#slider-range").slider("value") );
-    $('#slider-range').width(170);  
+    $('#slider-range').width(170);
+    $('#searchform').submit(function(){
+        alert('Deshabilitado de momento.\nDisculpe las molestias.')
+        return false;
+    });  
   });
 </script>
 {% endblock tail_script%}
