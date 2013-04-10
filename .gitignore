@@ -1,2 +1,3 @@
 *.pyc
 inmobiliaria/local_settings.py
+inmobliliaria/sqdatabase1.db
