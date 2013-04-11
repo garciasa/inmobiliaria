@@ -137,6 +137,7 @@ def addInmueble(request):
             data = {
                     'inmueble_form':inmuebleForm,
                     'image_formset':imageFormSet,
+                    'respuesta' : 'nok',
                     }
     else:
         inmuebleForm = AddForm();
