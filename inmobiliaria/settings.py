@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'south',
+    'captcha',
     'inmobiliaria',
     'django_admin_bootstrapped',
     # Uncomment the next line to enable the admin:

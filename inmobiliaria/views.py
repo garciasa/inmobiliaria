@@ -81,8 +81,9 @@ def contacto(request):
             respuesta = 'ok'
             #Limpiamos el form
             form = ContactForm();
-            #send_mail('Contacto a traves de la Web', 'Aqui el cuerpo...', 'contacto@inversioneslamoraleja.com',
-            #['agarcia@cittec.es'], fail_silently=False)
+            if (not settings.DEBUG):
+                send_mail('Contacto a traves de la Web', 'Aqui el cuerpo...', '***REMOVED***',
+                ['agarcia@cittec.es'], fail_silently=False)
     else:
         form = ContactForm()
 
@@ -175,7 +176,10 @@ def manage_file(f,_id,_cont):
 def add_watermark(image, text,angle=23,opacity=0.5):
     from PIL import Image, ImageDraw, ImageFont, ImageEnhance
     #TODO: Cambiar en produccion, esto para que la encuentre en osx
-    FONT = '/Library/Fonts/Arial Black.ttf'
+    if (not settgins.DEBUG):
+        FONT = 'Arial.ttf'
+    else:
+        FONT = '/Library/Fonts/Arial Black.ttf'
     img = Image.open(image).convert('RGB')
     watermark = Image.new('RGBA', img.size, (0,0,0,0))
     size = 2

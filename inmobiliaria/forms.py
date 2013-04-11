@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
+from captcha.fields import CaptchaField
 
 CHOICES_SEARCH = (('A','Alquiler'),('V','Venta'))
 CHOICES_PROVINCIA = ((1,'Madrid'),(2,'Otros'))
@@ -32,3 +33,4 @@ class ContactForm(forms.Form):
     nombre = forms.CharField(required=True)
     email = forms.EmailField(min_length=6,required=True)
     mensaje = forms.CharField(widget=forms.Textarea,required=True)
+    captcha = CaptchaField()

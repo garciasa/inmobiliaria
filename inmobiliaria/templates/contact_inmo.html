@@ -10,6 +10,10 @@
         width: 250px;
     }
 
+    #id_captcha_1{
+        width: 75px;
+    }
+
     .errorlist{ color:red;}
 </style>
 {% endblock %}
@@ -98,7 +102,12 @@
                                             <label for="id_mensaje">Mensaje:</label>
                                             {{ form.mensaje }}
     									</div>
-
+                                        <div class="clearfix">
+                                            {{ form.captcha.errors }}
+                                            <label for="id_captcha">Introduzca el texto que aparece:</label>
+                                            {{ form.captcha }}
+                                        </div>
+                                        <br>
     									<div class="actions">
     										<button tabindex="3" type="submit" class="btn btn-succes btn-large">Enviar Mensaje</button>
     									</div>
