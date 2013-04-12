@@ -30,41 +30,6 @@
 
 {% block content %}
 
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Panel Administraci&oacute;n</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Acciones<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">A&ntilde;adir Casa</a></li>
-                  <li><a href="#">Borrar Casa</a></li>
-                  <li><a href="#">Listar Casas</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div><!--/.nav-collapse -->
-          <div class="nav-collapse collapse pull-right ">
-            <ul class="nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bienvenido/a, <strong>{{request.user}}</strong><b class="caret"></b></a>
-                <ul class="dropdown-menu pull-right">
-                  <li><a href="{% url 'logout' %}">Terminar sesion</a></li>            
-                </ul>
-              </li>
-            </ul>
-          </div><!--/.nav-collapse -->          
-        </div>
-      </div>
-    </div>
-
     <div class="container"> 
     {% if respuesta == 'ok' %}
         <div class="alert alert-success">
@@ -76,7 +41,8 @@
     {% if respuesta == 'nok' %}
         <div class="alert alert-error">
             <button type="button" class="close" data-dismiss="alert">×</button>
-                El formulario contiene errores...
+                El formulario contiene errores...<br>
+                <strong>RECUERDE VOLVER A SELECCIONAR LAS FOTOS</strong>
         </div>
         {% endif %} 
         <form enctype="multipart/form-data" method="post" class="form-horizontal" action="{% url 'addInmueble' %}">

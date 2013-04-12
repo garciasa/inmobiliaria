@@ -4,6 +4,7 @@ import logging
 from django.conf import settings
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.db.models import F
 from django.shortcuts import render_to_response, render
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -12,7 +13,7 @@ from django.template import RequestContext
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from inmobiliaria.forms import SearchForm, AddForm, ImageForm, ContactForm
+from inmobiliaria.forms import SearchForm, AddForm, ImageForm, ContactForm, ActionForm
 from inmobiliaria.models import Inmueble, Imagen
 
 logger = logging.getLogger('django')
@@ -34,7 +35,7 @@ def compra(request):
 
 def inmuebles(request):
     form = SearchForm();
-    casas_list = Inmueble.objects.all()
+    casas_list = Inmueble.objects.all().filter(activo=True)
     paginator = Paginator(casas_list,3)
 
     page = request.GET.get('page')
@@ -92,6 +93,37 @@ def contacto(request):
     data.update(csrf(request))
     return render_to_response('contact_inmo.html',data,context_instance=RequestContext(request))
 
+@login_required(login_url='/private/login/')
+def listInmueble(request):
+    form = ActionForm()
+    casas_list = Inmueble.objects.all()
+    if request.method == 'POST':
+        form = ActionForm(request.POST)
+        if form.is_valid():
+            logger.debug(form.cleaned_data['operacion'])
+            if (form.cleaned_data['operacion'] == 'borrar'):
+                try:
+                    Inmueble.objects.get(pk=form.cleaned_data['item']).delete()
+                except DoesNotExist:
+                    logger.debug('Problemas borrando el objeto')
+            elif (form.cleaned_data['operacion'] == 'toggled'):
+                try:
+                    c = Inmueble.objects.get(pk=form.cleaned_data['item'])
+                    logger.debug(F('activo'))
+                    c.activo = not c.activo
+                    c.save(update_fields=['activo'])
+                except Exception, e:
+                    logger.debug('Problemas cambiado el estado el objeto: %s', str(e))
+
+        else:
+            form = ActionForm()
+
+    
+    data = {'casas':casas_list,
+            'form':form}
+    data.update(csrf(request))        
+    return render_to_response('gestiona/list_inmo.html',data,context_instance=RequestContext(request))
+
 
 @login_required(login_url='/private/login/')
 def addInmueble(request):
@@ -132,7 +164,7 @@ def addInmueble(request):
              'respuesta' : 'ok',
              }        
             data.update(csrf(request))
-            return render_to_response('gestiona/add_inmo.html',data)  
+            return render_to_response('gestiona/add_inmo.html',data,context_instance=RequestContext(request))  
         else:
             data = {
                     'inmueble_form':inmuebleForm,
@@ -176,7 +208,7 @@ def manage_file(f,_id,_cont):
 
 def add_watermark(image, text,angle=23,opacity=0.5):
     from PIL import Image, ImageDraw, ImageFont, ImageEnhance
-    #TODO: Cambiar en produccion, esto para que la encuentre en osx
+
     FONT = os.path.join(settings.SITE_ROOT, 'static/fonts/Arial.ttf')
     img = Image.open(image).convert('RGB')
     watermark = Image.new('RGBA', img.size, (0,0,0,0))

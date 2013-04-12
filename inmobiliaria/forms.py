@@ -23,7 +23,7 @@ class AddForm(forms.Form):
     banos = forms.IntegerField(label='Baños',required=True)
     contenido = forms.CharField(label='Descripcion', widget=forms.Textarea, required=True)
     precio = forms.IntegerField(label='Precio',min_value=0, max_value=999999999, required=True)
-    activo = forms.BooleanField(label='Activo', initial='True')
+    activo = forms.BooleanField(label='Activo', initial='True',required=False)
 
 class ImageForm(forms.Form):
     descripcion = forms.CharField(label='Descripcion', required=True)
@@ -34,3 +34,7 @@ class ContactForm(forms.Form):
     email = forms.EmailField(min_length=6,required=True)
     mensaje = forms.CharField(widget=forms.Textarea,required=True)
     captcha = CaptchaField()
+
+class ActionForm(forms.Form):
+    operacion = forms.CharField(widget=forms.HiddenInput(),required=True)
+    item = forms.CharField(widget=forms.HiddenInput(),required=True, max_length=3)
