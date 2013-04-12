@@ -53,7 +53,7 @@ def descripcion_inmueble(request,id):
     if request.method == 'GET':
         logger.debug(id)
         try:
-            casa = Inmueble.objects.get(pk=id).filter(activo=True)
+            casa = Inmueble.objects.get(pk=id,activo=True)
         except Inmueble.DoesNotExist:
             casa = None
         
