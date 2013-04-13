@@ -24,6 +24,7 @@
                                   <th>Descripcion</th>
                                   <th>Zona</th>
                                   <th>Provincia</th>
+                                  <th>Direccion</th>
                                   <th>Precio</th>
                                   <th>Status</th>
                                   <th>Acciones</th>
@@ -39,6 +40,7 @@
                                 <td>{{c.descripcion}}</td>
                                 <td class="center">{{c.zona}}</td>
                                 <td class="center">{% if c.provincia == '1' %}Madrid{%else%}Otra{%endif%}</td>
+                                <td class="center">{{c.direccion}}</td>
                                 <td class="center">{{c.precio|intcomma}}&euro;</td>
                                 <td class="center">
                                     {% if c.activo %}

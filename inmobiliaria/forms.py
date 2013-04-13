@@ -17,6 +17,7 @@ class AddForm(forms.Form):
     provincia = forms.ChoiceField(label='Provincia', choices=CHOICES_PROVINCIA,required=True)
     localidad = forms.CharField(label='Localidad', required=True)
     zona = forms.CharField(label='Zona', required=True)
+    direccion = forms.CharField(label='Direccion', required=True)
     descripcion = forms.CharField(label='Titulo', required=True)
     metros_casa = forms.IntegerField(label='Metros', required=True)
     habitaciones = forms.IntegerField(label='Habitaciones', required=True)

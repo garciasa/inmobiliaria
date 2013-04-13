@@ -17,6 +17,9 @@
     #id_titulo{
         width: 500px;
     }
+    #id_direccion{
+        width: 500px;
+    }
     #boton_addimage{
         margin-left: 10px;
     }
@@ -71,6 +74,11 @@
                                 {{ inmueble_form.zona.errors }}
                                 <label for="id_zona">Zona:</label>
                                 {{ inmueble_form.zona }}
+                            </div>
+                            <div class="clearfix">
+                                {{ inmueble_form.direccion.errors }}
+                                <label for="id_direccion">Direccion:</label>
+                                {{ inmueble_form.direccion }}
                             </div>
                             <div class="clearfix">
                                 {{ inmueble_form.precio.errors }}

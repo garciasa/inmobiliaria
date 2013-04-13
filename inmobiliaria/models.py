@@ -16,6 +16,7 @@ class Inmueble(models.Model):
     provincia = models.CharField(max_length=30)
     localidad = models.CharField(max_length=40)
     zona = models.CharField(max_length=50)
+    direccion = models.CharField(max_length=100)
     banos = models.IntegerField()
     habitaciones = models.IntegerField()
     metros_casa = models.IntegerField()
@@ -35,6 +36,7 @@ class Inmueble(models.Model):
                 tipo=form.cleaned_data['tipo'],
                 provincia=form.cleaned_data['provincia'],
                 localidad=form.cleaned_data['localidad'],
+                direccion = form.cleaned_data['direccion'],
                 zona=form.cleaned_data['zona'],
                 banos=form.cleaned_data['banos'],
                 habitaciones=form.cleaned_data['habitaciones'],
