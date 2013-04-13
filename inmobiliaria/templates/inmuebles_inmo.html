@@ -41,7 +41,6 @@
                 </div>   
                 
                 <div class="span10">
-                    
                     {%for c in casas%}
 
 
@@ -76,6 +75,11 @@
                             </div>
                         </div>
                     </div>
+
+                    {% empty %}
+                        <div class="span10 offset3">
+                            En estos momentos no tenemos inmuebles disponibles...
+                        </div>
 
                     {% endfor %}
             </div>
