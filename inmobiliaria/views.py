@@ -113,11 +113,9 @@ def listInmueble(request):
                     c.activo = not c.activo
                     c.save(update_fields=['activo'])
                 except Exception, e:
-                    logger.debug('Problemas cambiado el estado el objeto: %s', str(e))
-
+                    logger.debug('Problemas cambiado el estado el objeto: %s', str(e))                   
         else:
             form = ActionForm()
-
     
     data = {'casas':casas_list,
             'form':form}
