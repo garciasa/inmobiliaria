@@ -53,12 +53,9 @@
             <div class="navbar navbar-inverse">
 
                 <div class="navbar-inner">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>                    
-                    <a href="{% url 'home' %}"><img src="/static/img/LogoM1.jpg"></a>
+                    <div class="container span4">      
+                        <a href="{% url 'home' %}"><img src="/static/img/LogoM1.jpg"></a>
+                    </div>
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="{% ifequal request.path '/' %}active{% endifequal %}">
