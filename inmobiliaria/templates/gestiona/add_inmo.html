@@ -46,6 +46,7 @@
             <button type="button" class="close" data-dismiss="alert">×</button>
                 El formulario contiene errores...<br>
                 <strong>RECUERDE VOLVER A SELECCIONAR LAS FOTOS</strong>
+                <strong>{{inmueble_form.errors}}</strong>
         </div>
         {% endif %} 
         <form enctype="multipart/form-data" method="post" class="form-horizontal" action="{% url 'addInmueble' %}">
@@ -100,7 +101,7 @@
                                                 A&ntilde;adir mas fotos
                                         </a>
                                     </span>
-                                 </legend>
+                                 </legend>                                 
                                     {{ image_formset.management_form }} 
                                     {% for form in image_formset.forms %}
                                     <div class="item">
@@ -117,11 +118,13 @@
                                 <label for="id_titulo">Titulo:</label>
                                 {{ inmueble_form.titulo }}
                             </div>
+                            <!--
                             <div class="clearfix">
                                 {{ inmueble_form.descripcion.errors }}
                                 <label for="id_descripcion">Descripcion pequeña:</label>
                                 {{ inmueble_form.descripcion }}
                             </div>
+                        -->
                             <div class="clearfix">
                                 {{ inmueble_form.metros_casa.errors }}
                                 <label for="id_metros_casa">Metros Casa:</label>

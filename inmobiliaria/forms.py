@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from captcha.fields import CaptchaField
+from inmobiliaria.models import Inmueble, Imagen
+from django.forms import ModelForm
 
 CHOICES_SEARCH = (('A','Alquiler'),('V','Venta'))
 CHOICES_PROVINCIA = ((1,'Madrid'),(2,'Otros'))
@@ -10,7 +12,10 @@ class SearchForm(forms.Form):
     provincia = forms.ChoiceField(label='Provincia', choices=CHOICES_PROVINCIA,required=True)
     habitaciones = forms.CharField(label='Habitaciones',required=True)
 
-class AddForm(forms.Form):
+class AddForm(ModelForm):
+    class Meta:
+        model = Inmueble
+
     fecha_insert = forms.DateField(label='Fecha Alta',required=False  )
     titulo = forms.CharField(label='Titulo',required=True)
     tipo = forms.ChoiceField(label='Tipo',choices=CHOICES_SEARCH, required=True)
@@ -18,7 +23,6 @@ class AddForm(forms.Form):
     localidad = forms.CharField(label='Localidad', required=True)
     zona = forms.CharField(label='Zona', required=True)
     direccion = forms.CharField(label='Direccion', required=True)
-    descripcion = forms.CharField(label='Titulo', required=True)
     metros_casa = forms.IntegerField(label='Metros', required=True)
     habitaciones = forms.IntegerField(label='Habitaciones', required=True)
     banos = forms.IntegerField(label='Baños',required=True)
@@ -26,9 +30,14 @@ class AddForm(forms.Form):
     precio = forms.IntegerField(label='Precio',min_value=0, max_value=999999999, required=True)
     activo = forms.BooleanField(label='Activo', initial='True',required=False)
 
-class ImageForm(forms.Form):
-    descripcion = forms.CharField(label='Descripcion', required=True)
+class ImageForm(ModelForm):
+    class Meta:
+        model = Imagen
+        exclude = ('nombre','ruta','inmueble')
+
+    #descripcion = forms.CharField(label='Descripcion', required=True)
     fichero = forms.ImageField(label='Foto', required=True)
+
 
 class ContactForm(forms.Form):
     nombre = forms.CharField(required=True)

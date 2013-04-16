@@ -11,7 +11,7 @@ TIPO_INMUEBLE = (
 
 class Inmueble(models.Model):
     fecha_insert = models.DateField()
-    descripcion = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50,blank=True)
     tipo = models.CharField(max_length=2,choices=TIPO_INMUEBLE)
     provincia = models.CharField(max_length=30)
     localidad = models.CharField(max_length=40)
@@ -23,7 +23,7 @@ class Inmueble(models.Model):
     contenido = models.CharField(max_length=250)
     precio = models.PositiveIntegerField()
     activo = models.BooleanField()
-    visitas = models.IntegerField()
+    visitas = models.IntegerField(blank=True)
 
 
     def __unicode__(self):
@@ -48,10 +48,10 @@ class Inmueble(models.Model):
                 )
 
 class Imagen(models.Model):
-    ruta = models.CharField(max_length=50)
-    nombre = models.CharField(max_length=50)
+    ruta = models.CharField(max_length=50, blank=True)
+    nombre = models.CharField(max_length=50, blank=True)
     descripcion = models.CharField(max_length=50)
-    inmueble = models.ForeignKey(Inmueble ,verbose_name=u'Id del Inmueble al que pertenece')
+    inmueble = models.ForeignKey(Inmueble ,verbose_name=u'Id del Inmueble al que pertenece', blank=True)
     
     def __unicode__(self):
         return u'%s - %s' % (self.id, self.nombre)

@@ -12,7 +12,7 @@ env.activate = 'source /home/ubuntu/inmoviliaria/bin/activate'
 def virtualenv(command):
     with cd(env.remotedir):
         run(env.activate + ' && ' + command)
-
+'''
 def pushpull():
     #Local commands
     with cd(env.localfolder):
@@ -21,6 +21,19 @@ def pushpull():
     with cd(env.remotedir):
         #update git repository
         run('git pull')
+'''
+
+def pushpull(branch='master'):
+   #Local commands
+   with cd(env.localfolder):
+       local('git push %s %s'% (env.remotename,branch))
+   #Remote commands
+   with cd(env.remotedir):
+       #update git repository
+       run('git checkout %s' % (branch))
+       run('git pull %s %s' % (env.remotename,branch))
+
+
 
 def syncdb():
     virtualenv('python manage.py syncdb')
@@ -29,8 +42,8 @@ def install_requirements():
     virtualenv('pip install -r %srequirements.txt' % (env.remotedir))
 
 @task(alias='dp', default=True)
-def deploy():
-    pushpull()
+def deploy(branch='master'):
+    pushpull(branch)
     #syncdb
     syncdb()
     #restart the gunicorn server
@@ -43,3 +56,4 @@ def restartunicorn():
 @task(alias='rn')
 def restartnginx():
     run('sudo service nginx restart')
+

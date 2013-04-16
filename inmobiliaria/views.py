@@ -16,6 +16,7 @@ from django.contrib.auth import logout
 from inmobiliaria.forms import SearchForm, AddForm, ImageForm, ContactForm, ActionForm
 from inmobiliaria.models import Inmueble, Imagen
 
+
 logger = logging.getLogger('django')
 
 def home(request):
@@ -113,7 +114,14 @@ def listInmueble(request):
                     c.activo = not c.activo
                     c.save(update_fields=['activo'])
                 except Exception, e:
-                    logger.debug('Problemas cambiado el estado el objeto: %s', str(e))                   
+                    logger.debug('Problemas cambiado el estado el objeto: %s', str(e)) 
+            elif (form.cleaned_data['operacion'] == 'editar'):
+                try:
+                     c = Inmueble.objects.get(pk=form.cleaned_data['item'])
+                     form1 = AddForm(instance=c)
+                     logger.debug("pasando por editar")
+                except Exception, e:
+                    logger.debug('Problemas editando el objeto: %s', str(e)) 
         else:
             form = ActionForm()
     
