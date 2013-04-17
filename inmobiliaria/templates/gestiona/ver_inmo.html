@@ -1,4 +1,5 @@
 {% extends "gestiona/base.html" %}
+{% load humanize %}
 
 {% block head_script %}
 <style type="text/css">
@@ -34,86 +35,65 @@
 {% block content %}
 
     <div class="container"> 
-    {% if respuesta == 'ok' %}
-        <div class="alert alert-success">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            La operacion se ha realizado correctamente, puede añadir más si quiere...
-
-        </div>
-    {% endif %} 
-    {% if respuesta == 'nok' %}
-        <div class="alert alert-error">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-                El formulario contiene errores...<br>
-                <strong>RECUERDE VOLVER A SELECCIONAR LAS FOTOS</strong>
-                <strong>{{inmueble_form.errors}}</strong>
-        </div>
-        {% endif %} 
-        <form enctype="multipart/form-data" method="post" class="form-horizontal" action="{% url 'addInmueble' %}">
+        <form method="post" class="form-horizontal" action="#">
             {% csrf_token %}
             <fieldset>
-                <legend>Alta Inmueble</legend>        
+                <legend>Ver Inmueble</legend>        
                 <div class="row">
                         <div class="span6">                        
 
                             <div class="clearfix">
-                                {{ inmueble_form.tipo.errors }}
                                 <label for="id_tipo">Tipo:</label>
-                                {{ inmueble_form.tipo }}
+                                <strong>{{casa.get_tipo_display}}</strong>
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.provincia.errors }}
                                 <label for="id_provincia">Provincia:</label>
-                                {{ inmueble_form.provincia }}
+                                <strong>{{casa.get_provincia_display}}</strong>
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.localidad.errors }}
                                 <label for="id_localidad">Localidad:</label>
-                                {{ inmueble_form.localidad }}
+                                <strong>{{ casa.localidad }}</strong>
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.zona.errors }}
                                 <label for="id_zona">Zona:</label>
-                                {{ inmueble_form.zona }}
+                                <strong>{{ casa.zona }}</strong>
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.direccion.errors }}
                                 <label for="id_direccion">Direccion:</label>
-                                {{ inmueble_form.direccion }}
+                                <strong>{{ casa.direccion }}</strong>
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.precio.errors }}
                                 <label for="id_precio">Precio:</label>
-                                {{ inmueble_form.precio }}
+                                <strong>{{ casa.precio|intcomma }}
+                                    {%if casa.tipo == 'A'%}&euro;/mes
+                                             {%else%}
+                                                &euro;
+                                             {%endif%}</strong>
+
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.activo.errors }}
                                 <label for="id_activo">Visible:</label>
-                                {{ inmueble_form.activo }}
+                                {% if casa.activo%}
+                                    <strong>Si</strong>
+                                {% else %}
+                                    <strong>No</strong>
+                                {% endif %}
                             </div>
                             <fieldset>
                                  <legend>
-
                                     Imagenes del Inmueble
-                                    <span id="boton_addimage">
-                                        <a id="add" class="btn btn-success" href="#">
-                                            <i class="icon-plus-sign icon-white"></i>
-                                                A&ntilde;adir mas fotos
-                                        </a>
-                                    </span>
                                  </legend>                                 
-                                    {{ image_formset.management_form }} 
-                                    {% for form in image_formset.forms %}
-                                    <div class="item">
-                                        {{form.as_p}}
-                                        <p><a class="delete btn btn-danger" href="#"><i class="icon-trash icon-white"></i> Borrar</a></p>
+                                    {% for i in images%}
+                                    <div id="item{{i.nombre|slice:"-1:"}}" class="item">                                        
+                                                <img style="width:180px;height:auto;" src="{{ i.ruta|add:i.nombre }}-thumbnail.png" />
+                                        
                                     </div>
                                     {% endfor %}
                             </fieldset>
 
                         </div>
                         <div class="span6">
-                        <!--
+                            <!--
                             <div class="clearfix">
                                 {{ inmueble_form.titulo.errors }}
                                 <label for="id_titulo">Titulo:</label>
@@ -121,34 +101,28 @@
                             </div>
                             -->
                             <div class="clearfix">
-                                {{ inmueble_form.descripcion.errors }}
                                 <label for="id_descripcion">Descripcion pequeña:</label>
-                                {{ inmueble_form.descripcion }}
+                                <strong>{{ casa.descripcion }}</strong>
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.metros_casa.errors }}
                                 <label for="id_metros_casa">Metros Casa:</label>
-                                {{ inmueble_form.metros_casa }}
+                                <strong>{{ casa.metros_casa }}</strong>
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.habitaciones.errors }}
                                 <label for="id_habitaciones">Habitaciones:</label>
-                                {{ inmueble_form.habitaciones }}
+                                <strong>{{ casa.habitaciones }}</strong>
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.banos.errors }}
                                 <label for="id_banos">Baños:</label>
-                                {{ inmueble_form.banos }}
+                                <strong>{{ casa.banos }}</strong>
                             </div>
                             <div class="clearfix">
-                                {{ inmueble_form.contenido.errors }}
                                 <label for="id_contenido">Descripcion grande:</label>
-                                {{ inmueble_form.contenido }}
+                                <strong>{{ casa.contenido }}</strong>
                             </div>
                             <hr>
                             <div class="clearfix">
-                                <input type="submit" class="btn btn-primary btn-large btn-succes" value="Guardar Inmueble">
-                                <input type="reset" class="btn btn-primary btn-large btn-succes" value="Limpiar">
+                                <input type="button" onClick="location.href='{% url 'listInmueble'%}'" class="btn btn-primary btn-large btn-succes" value="Volver">
                             </div>
                         </div>
                 </div> 

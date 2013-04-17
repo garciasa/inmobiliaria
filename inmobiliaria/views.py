@@ -1,19 +1,22 @@
 #mis vistas
 import os
 import logging
+import datetime
 from django.conf import settings
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.db.models import F
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, get_object_or_404
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.template import RequestContext
 from django.forms.formsets import formset_factory, BaseFormSet
+from django.forms.models import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from inmobiliaria.forms import SearchForm, AddForm, ImageForm, ContactForm, ActionForm
+from django.contrib.sites.models import Site
+from inmobiliaria.forms import SearchForm, AddForm, ImageForm, ContactForm, ActionForm, EnviarForm
 from inmobiliaria.models import Inmueble, Imagen
 
 
@@ -94,6 +97,98 @@ def contacto(request):
     data.update(csrf(request))
     return render_to_response('contact_inmo.html',data,context_instance=RequestContext(request))
 
+
+@login_required(login_url='/private/login/')
+def modInmueble(request,id):
+    #logger.debug(id)
+    #logger.debug(vars(instance))
+    if request.method == 'POST':
+        instance = get_object_or_404(Inmueble, id=id)    
+        inmuebleForm = AddForm(request.POST,instance=instance)
+        if inmuebleForm.is_valid():            
+            inmuebleForm.save()
+            action = ActionForm()
+            data = {'casas':Inmueble.objects.all(),
+                    'form':action}
+            data.update(csrf(request))        
+            return render_to_response('gestiona/list_inmo.html',data,context_instance=RequestContext(request))
+        else:            
+            logger.debug("en el primero")
+            data = {'inmueble_form':inmuebleForm,
+                    'images':[],
+                    'respuesta' : '',
+                     'id':id,    
+                    }        
+            data.update(csrf(request))
+            return render_to_response('gestiona/mod_inmo.html',data,context_instance=RequestContext(request))
+    else:
+        instance = get_object_or_404(Inmueble, id=id)  
+        inmuebleForm = AddForm(instance=instance)
+        #imagenFormSet = modelformset_factory(Imagen)
+        #formset = imagenFormSet(queryset=instance.imagen_set.all())
+        data = {'inmueble_form':inmuebleForm,
+                    'images': instance.imagen_set.all(),
+                    #'formset': imagenFormSet,
+                    'respuesta' : '',
+                    'id':id,
+                    }        
+        data.update(csrf(request))
+        return render_to_response('gestiona/mod_inmo.html',data,context_instance=RequestContext(request))
+
+@login_required(login_url='/private/login/')
+def verInmueble(request,id):
+
+    instance = get_object_or_404(Inmueble, id=id)  
+    data = {'casa':instance,
+            'images': instance.imagen_set.all(),
+            'respuesta' : '',
+            }        
+    return render_to_response('gestiona/ver_inmo.html',data,context_instance=RequestContext(request))
+
+@login_required(login_url='/private/login/')
+def enviarInmueble(request,id):   
+    if request.method == 'POST':
+        form = EnviarForm(request.POST)
+        if form.is_valid():
+            logger.debug("Enviando")
+            form = ActionForm()
+            casas_list = Inmueble.objects.all()
+            data = {'casas':casas_list,
+            'form':form,
+            'respuesta':'ok'}
+            data.update(csrf(request))        
+            return render_to_response('gestiona/list_inmo.html',data,context_instance=RequestContext(request))
+
+        else:
+            data = {'form':form,
+                    'id':id,
+                    'respuesta':'nok'}
+            data.update(csrf(request))
+            return render_to_response('gestiona/enviar_inmo.html',data,context_instance=RequestContext(request))
+
+    else:
+        logger.debug("Ponemos la parametros del email")
+        c = get_object_or_404(Inmueble, id=id)  
+        textbody = """Esta es la referencia de la casa que usted ha solicitado:
+
+http://%s%s                    
+                    
+Gracias por la confianza depositada en nosotros.""" % (Site.objects.get_current().domain,
+                                                                          c.get_absolute_url())
+
+
+        datosform = {'subject':'Referencia inmueble de inversioneslamoraleja.com',
+                     'body':textbody}
+
+        form = EnviarForm(initial=datosform)
+        data = {'form':form,
+                'id':id,}
+
+        data.update(csrf(request))
+        return render_to_response('gestiona/enviar_inmo.html',data,context_instance=RequestContext(request))
+
+
+
 @login_required(login_url='/private/login/')
 def listInmueble(request):
     form = ActionForm()
@@ -115,13 +210,6 @@ def listInmueble(request):
                     c.save(update_fields=['activo'])
                 except Exception, e:
                     logger.debug('Problemas cambiado el estado el objeto: %s', str(e)) 
-            elif (form.cleaned_data['operacion'] == 'editar'):
-                try:
-                     c = Inmueble.objects.get(pk=form.cleaned_data['item'])
-                     form1 = AddForm(instance=c)
-                     logger.debug("pasando por editar")
-                except Exception, e:
-                    logger.debug('Problemas editando el objeto: %s', str(e)) 
         else:
             form = ActionForm()
     
@@ -150,10 +238,11 @@ def addInmueble(request):
         imageFormSet = ImageFormSet(request.POST, request.FILES)
         
         if inmuebleForm.is_valid() and imageFormSet.is_valid():
-            casa = Inmueble.create(inmuebleForm)
-            #logger.debug(vars(casa))
+            casa = inmuebleForm.save(commit=False)
+            casa.fecha_insert = datetime.datetime.now()
+            casa.visitas = 1
             casa.save()
-            #logger.debug(vars())
+            #logger.debug(vars(casa))
             cont = 1
             for f in imageFormSet.forms:
                 ruta,nombre = manage_file(f.cleaned_data['fichero'],casa.id, cont)

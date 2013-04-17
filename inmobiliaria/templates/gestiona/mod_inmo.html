@@ -49,10 +49,10 @@
                 <strong>{{inmueble_form.errors}}</strong>
         </div>
         {% endif %} 
-        <form enctype="multipart/form-data" method="post" class="form-horizontal" action="{% url 'addInmueble' %}">
+        <form enctype="multipart/form-data" method="post" class="form-horizontal" action="{% url 'modInmueble' id %}">
             {% csrf_token %}
             <fieldset>
-                <legend>Alta Inmueble</legend>        
+                <legend>Modificar Inmueble</legend>        
                 <div class="row">
                         <div class="span6">                        
 
@@ -93,27 +93,19 @@
                             </div>
                             <fieldset>
                                  <legend>
-
                                     Imagenes del Inmueble
-                                    <span id="boton_addimage">
-                                        <a id="add" class="btn btn-success" href="#">
-                                            <i class="icon-plus-sign icon-white"></i>
-                                                A&ntilde;adir mas fotos
-                                        </a>
-                                    </span>
                                  </legend>                                 
-                                    {{ image_formset.management_form }} 
-                                    {% for form in image_formset.forms %}
-                                    <div class="item">
-                                        {{form.as_p}}
-                                        <p><a class="delete btn btn-danger" href="#"><i class="icon-trash icon-white"></i> Borrar</a></p>
+                                    {% for i in images%}
+                                    <div id="item{{i.nombre|slice:"-1:"}}" class="item">                                        
+                                                <img style="width:180px;height:auto;" src="{{ i.ruta|add:i.nombre }}-thumbnail.png" />
+                                        
                                     </div>
                                     {% endfor %}
                             </fieldset>
 
                         </div>
                         <div class="span6">
-                        <!--
+                            <!--
                             <div class="clearfix">
                                 {{ inmueble_form.titulo.errors }}
                                 <label for="id_titulo">Titulo:</label>
@@ -147,8 +139,7 @@
                             </div>
                             <hr>
                             <div class="clearfix">
-                                <input type="submit" class="btn btn-primary btn-large btn-succes" value="Guardar Inmueble">
-                                <input type="reset" class="btn btn-primary btn-large btn-succes" value="Limpiar">
+                                <input type="submit" class="btn btn-primary btn-large btn-succes" value="Modificar Inmueble">
                             </div>
                         </div>
                 </div> 

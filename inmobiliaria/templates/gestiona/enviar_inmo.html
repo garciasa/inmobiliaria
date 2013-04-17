@@ -1,0 +1,61 @@
+{% extends "gestiona/base.html" %}
+
+{% block head_script %}
+<style type="text/css">
+    label { 
+        display: block; 
+        width: 150px;
+        margin-top: 5px; 
+    }
+    
+    #id_to{
+        width: 300px;
+    }
+    #id_body {
+        width: 500px;
+        height: 200px;
+    }
+    #id_subject{
+        width: 500px;
+    }
+    .errorlist{ color:red;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container"> 
+    {% if respuesta == 'nok' %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+                El formulario contiene errores...<br>
+        </div>
+        {% endif %} 
+        <form method="post" class="form-horizontal" action="{% url 'enviarInmueble' id %}">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Enviar datos del Inmueble por email</legend>        
+                <div class="row">
+                        <div class="span12">                        
+                            {{form.as_p}}
+                        </div>
+                </div> 
+                    <!--row-->
+                <div class="clearfix">
+                    <input type="submit" class="btn btn-primary btn-large btn-succes" value="Enviar Inmueble">                    
+                    </div>
+            </fieldset>
+        </form>
+</div>
+{% endblock content %}
+
+{% block tail_script %}
+<script type="text/javascript">
+
+window.setTimeout(function() {
+  $(".alert").fadeTo(500, 0).slideUp(500, function(){
+       $(this).remove(); 
+    });
+}, 5000);
+</script>
+
+{% endblock %}

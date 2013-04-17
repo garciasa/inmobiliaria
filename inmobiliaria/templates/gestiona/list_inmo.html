@@ -11,6 +11,18 @@
 {% block content %}
 
     <div class="container"> 
+   {% if respuesta == 'ok' %}
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            La operacion se ha realizado correctamente..
+        </div>
+    {% endif %} 
+    {% if respuesta == 'nok' %}
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+                Se ha producido un error...<br>              
+        </div>
+        {% endif %} 
 
         <div class="row-fluid sortable">        
                 <div class="box span12">
@@ -52,11 +64,11 @@
                                     {% endif %}
                                 </td>
                                 <td class="center">
-                                    <a class="btn btn-success" href="javascript:operacion('ver','{{c.id}}');">
+                                    <a class="btn btn-success" href="{% url 'verInmueble' c.id%}">
                                         <i class="icon-zoom-in icon-white"></i>  
                                         Ver                                          
                                     </a>
-                                    <a class="btn btn-info" href="javascript:operacion('editar','{{c.id}}');">
+                                    <a class="btn btn-info" href="{% url 'modInmueble' c.id %}">
                                         <i class="icon-edit icon-white"></i>  
                                         Editar                                            
                                     </a>
@@ -64,7 +76,7 @@
                                         <i class="icon-trash icon-white"></i> 
                                         Borrar
                                     </a>
-                                    <a class="btn btn-action" href="javascript:operacion('enviar','{{c.id}}');">
+                                    <a class="btn btn-action" href="{% url 'enviarInmueble' c.id %}">
                                         <i class="icon-envelope icon-black"></i> 
                                         Enviar
                                     </a>
@@ -106,11 +118,7 @@ function operacion(action, item_id){
     $('#id_item').val(item_id);
     $('#listForm').submit();  
   }
-  if (action == 'editar'){
-    $('#id_operacion').val('editar');
-    $('#id_item').val(item_id);
-    $('#listForm').submit();  
-  }
+
   if (action == 'toggle'){
     $('#id_operacion').val('toggled');
     $('#id_item').val(item_id);
@@ -120,6 +128,11 @@ function operacion(action, item_id){
   
 }
 
+window.setTimeout(function() {
+  $(".alert").fadeTo(500, 0).slideUp(500, function(){
+       $(this).remove(); 
+    });
+}, 5000);
 </script>
 
 {% endblock %}
