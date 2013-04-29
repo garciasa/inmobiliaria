@@ -98,6 +98,7 @@
                                     {% for i in images%}
                                     <div id="item{{i.nombre|slice:"-1:"}}" class="item">                                        
                                                 <img style="width:180px;height:auto;" src="{{ i.ruta|add:i.nombre }}-thumbnail.png" />
+                                                <button class="delete btn btn-danger" id="btn-item-{{i.nombre|slice:"-3:"}}"><i class="icon-trash icon-white"></i> Borrar</button>
                                         
                                     </div>
                                     {% endfor %}
@@ -150,5 +151,8 @@
 {% endblock content %}
 
 {% block tail_script %}
-<script src="/static/js/app/addImage.js"></script>
+<script type="text/javascript">
+    var url_modificar = '{% url 'modInmueble'%}';
+</script>
+<script src="/static/js/app/delImage.js"></script>
 {% endblock %}
