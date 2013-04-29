@@ -48,7 +48,7 @@
                         <div class="picture">
                             <a href="{% url 'inmuebles' c.id %}" title="Title">
                                 {% with c.imagen_set.all|first as image %}
-                                    <img src="{{ image.ruta|add:image.nombre }}-thumbnail.png" />
+                                    <img width="300" height="318" src="{{ image.ruta|add:image.nombre }}-thumbnail.png" />
                                 {% endwith %}
                                 <div class="image-overlay-link"></div>
                             </a>
