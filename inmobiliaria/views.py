@@ -103,6 +103,8 @@ def modInmueble(request,id):
     #logger.debug(id)
     #logger.debug(vars(instance))
     if request.method == 'POST':
+        if request.is_ajax():
+            logger.debut("Esta es ajax")
         instance = get_object_or_404(Inmueble, id=id)    
         inmuebleForm = AddForm(request.POST,instance=instance)
         if inmuebleForm.is_valid():            
@@ -292,11 +294,16 @@ def manage_file(f,_id,_cont):
     nombreThumb = 'img-'+str(_id)+'-'+str(_cont)+'-thumbnail.png'
     ruta = os.path.join(settings.SITE_ROOT, 'static/img/casas/')
     
-    image.thumbnail(normalSize, Image.ANTIALIAS)
+    image.resize(normalSize, Image.ANTIALIAS)
     image.save(ruta+nombre,'PNG',optimized=True)  
 
+    
+    new_image = Image.new(image.mode, thumbnailSize,(255,255,255))
     image.thumbnail(thumbnailSize, Image.ANTIALIAS)    
-    image.save(ruta+nombreThumb,'PNG',optimized=True)  
+    x_offset = (new_image.size[0] - image.size[0]) // 2
+    y_offset = (new_image.size[1] - image.size[1]) // 2
+    new_image.paste(image, (x_offset, y_offset))
+    new_image.save(ruta+nombreThumb,'PNG',optimized=True)  
 
     logger.debug('Guardando fichero....')
     return ('/static/img/casas/',nombre)
