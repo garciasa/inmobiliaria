@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- start: Page Title -->
+    <div id="page-title">
+
+        <div id="page-title-inner">
+
+            <!-- start: Container -->
+            <div class="container">
+
+                <h2><i class="ico-home ico-white"></i>Inmuebles</h2>
+
+            </div>
+            <!-- end: Container  -->
+
+        </div>  
+
+    </div>
+    <!-- end: Page Title -->
+    
+    <!--start: Wrapper-->
+    <div id="wrapper">
+                
+        <!--start: Container -->
+        <div class="container">
+    
+            <!--start: Row -->
+            <div class="row-fluid">
+        
+                <div class="span2">
+                    {% include 'search/searchbox.html' %}
+                </div>   
+                
+                <div class="span10">
+                    {%for c in casas%}
+
+
+                    <div class="span3 {%if forloop.counter0 == 0%}offset1{%endif%}">
+                        <div class="picture">
+                            <a href="{% url 'inmuebles' c.id %}" title="Title">
+                                {% with c.imagen_set.all|first as image %}
+                                    <img width="300" height="318" src="{{ image.ruta|add:image.nombre }}-thumbnail.png" />
+                                {% endwith %}
+                                <div class="image-overlay-link"></div>
+                            </a>
+                            <div class="item-description alt">
+                                <h4><a href="{% url 'inmuebles' c.id %}">{{c.descripcion}}</a></h4>
+                                <p>
+                                        {% if c.tipo == 'A'%}
+                                            <h2>Alquiler</h2>
+                                        {% else %}
+                                            <h2>Venta</h2>
+                                        {%endif%}
+                                    <ul>
+                                        <li>Provincia: {% if c.provincia == '1' %}Madrid{%else%}Otra{%endif%}</li>    
+                                        <li>Localidad: {{c.localidad}}</li>
+                                        <li>Zona: {{c.zona}}</li>
+                                        <li>Metros: {{c.metros_casa}} m2</li>
+                                        <li>Dormitorios: {{c.habitaciones}}</li>
+                                    </ul>
+                                </p>
+                            </div>
+                            <div class="post-meta">
+                                <span><i class="mini-ico-calendar"></i>{{c.fecha_insert|date:'d/m/Y'}}</span>
+                                <span><i class="mini-ico-eye-open"></i>{{c.visitas}} Visitas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% empty %}
+                        <div class="span10 offset3">
+                            En estos momentos no tenemos inmuebles disponibles...
+                        </div>
+
+                    {% endfor %}
+            </div>
+            <!--end: Row-->
+            
+            <div class="row">
+                <div class="span10 offset3">
+                    <ul class="pagination">
+                        {% if casas.has_previous %}
+                            <a href="?page={{ casas.previous_page_number }}"><li>Anterior</li></a>
+                        {% endif %}
+
+                        <li class="current">
+                            P&aacute;gina {{ casas.number }} de {{ casas.paginator.num_pages }}
+                        </li>
+
+                        {% if casas.has_next %}
+                            <a href="?page={{ casas.next_page_number }}"><li>Siguiente</li></a>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!--end: Container-->
+    </div>
+    <!-- end: Wrapper  -->          
+
+{% endblock content %}
+
+
+{% block tail_script %}
+<script>
+$(document).ready(
+    function (){
+    $( "#slider-range" ).slider({
+      range: 'min',
+      value: 2,
+      min: 1,
+      max: 6,
+      slide: function( event, ui ) {
+        $("#id_habitaciones").val(ui.value);
+      }
+    });
+    $("#id_habitaciones").val($("#slider-range").slider("value") );
+    $('#slider-range').width(170);
+    $('#searchform').submit(function(){
+        alert('Deshabilitado de momento.\nDisculpe las molestias.')
+        return false;
+    });  
+  });
+</script>
+{% endblock tail_script%}

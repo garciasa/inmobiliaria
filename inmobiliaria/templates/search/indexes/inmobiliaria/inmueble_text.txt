@@ -1,0 +1,8 @@
+{{ object.descripcion }}
+{{ object.tipo }}
+{{ object.provincia }}
+{{ object.localidad }}
+{{ object.zona }}
+{{ object.banos }}
+{{ object.habitaciones }}
+{{ object.contenido }}
