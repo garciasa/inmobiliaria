@@ -142,9 +142,9 @@
 
   <fields>
     <!-- general -->
-    <field name="id" type="string" indexed="true" stored="true" multiValued="false" required="true"/>
-    <field name="django_ct" type="string" indexed="true" stored="true" multiValued="false"/>
-    <field name="django_id" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="{{ ID }}" type="string" indexed="true" stored="true" multiValued="false" required="true"/>
+    <field name="{{ DJANGO_CT }}" type="string" indexed="true" stored="true" multiValued="false"/>
+    <field name="{{ DJANGO_ID }}" type="string" indexed="true" stored="true" multiValued="false"/>
     <field name="_version_" type="long" indexed="true" stored="true"/>
 
     <dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>
@@ -158,46 +158,17 @@
     <dynamicField name="*_p" type="location" indexed="true" stored="true"/>
     <dynamicField name="*_coordinate"  type="tdouble" indexed="true"  stored="false"/>
 
-
-    <field name="zona" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <field name="provincia" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <field name="banos" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <field name="tipo" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <field name="contenido" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <field name="text" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <field name="tipo_exact" type="string" indexed="true" stored="true" multiValued="false" />
-
-    <field name="localidad_exact" type="string" indexed="true" stored="true" multiValued="false" />
-
-    <field name="banos_exact" type="string" indexed="true" stored="true" multiValued="false" />
-
-    <field name="zona_exact" type="string" indexed="true" stored="true" multiValued="false" />
-
-    <field name="descripcion" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <field name="habitaciones_exact" type="string" indexed="true" stored="true" multiValued="false" />
-
-    <field name="localidad" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <field name="habitaciones" type="text_en" indexed="true" stored="true" multiValued="false" />
-
-    <field name="provincia_exact" type="string" indexed="true" stored="true" multiValued="false" />
-
+{% for field in fields %}
+    <field name="{{ field.field_name }}" type="{{ field.type }}" indexed="{{ field.indexed }}" stored="{{ field.stored }}" multiValued="{{ field.multi_valued }}" />
+{% endfor %}
   </fields>
 
   <!-- field to use to determine and enforce document uniqueness. -->
-  <uniqueKey>id</uniqueKey>
+  <uniqueKey>{{ ID }}</uniqueKey>
 
   <!-- field for the QueryParser to use when an explicit fieldname is absent -->
-  <defaultSearchField>text</defaultSearchField>
+  <defaultSearchField>{{ content_field_name }}</defaultSearchField>
 
   <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
-  <solrQueryParser defaultOperator="AND"/>
+  <solrQueryParser defaultOperator="{{ default_operator }}"/>
 </schema>
-
