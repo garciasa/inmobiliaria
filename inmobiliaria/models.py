@@ -36,24 +36,7 @@ class Inmueble(models.Model):
 
     def get_absolute_url(self):
         return "/inmuebles/%i/" % (self.id)
-'''
-    @classmethod
-    def create(cls,form):
-        return cls(fecha_insert=datetime.date(2013,01,01),
-                tipo=form.cleaned_data['tipo'],
-                provincia=form.cleaned_data['provincia'],
-                localidad=form.cleaned_data['localidad'],
-                direccion = form.cleaned_data['direccion'],
-                zona=form.cleaned_data['zona'],
-                banos=form.cleaned_data['banos'],
-                habitaciones=form.cleaned_data['habitaciones'],
-                metros_casa=form.cleaned_data['metros_casa'],
-                contenido=form.cleaned_data['contenido'],
-                precio = form.cleaned_data['precio'],
-                activo=form.cleaned_data['activo'],
-                visitas = random.randrange(1,43),
-                )
-'''
+
 
 class Imagen(models.Model):
     ruta = models.CharField(max_length=50, blank=True)

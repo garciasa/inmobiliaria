@@ -1,8 +1,15 @@
 from django.conf.urls import patterns, include, url
+from haystack.query import SearchQuerySet
+from haystack.views import SearchView
+from inmobiliaria.forms import InmuebleSearchForm
+from inmobiliaria.views import InmueblesSearchView
+
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
+sqs = SearchQuerySet()
 
 urlpatterns = patterns('',
     # Examples:
@@ -22,6 +29,11 @@ urlpatterns = patterns('',
     url(r'^inmuebles/(\d+)','inmobiliaria.views.descripcion_inmueble',name='inmuebles'),
     url(r'^inmuebles','inmobiliaria.views.inmuebles',name='inmuebles'),
     url(r'^contacto','inmobiliaria.views.contacto',name='contacto'),
+    url(r'^search/', InmueblesSearchView(
+        template='search/search.html',
+        searchqueryset=sqs,
+        form_class=InmuebleSearchForm
+    ), name='haystack_search'),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^private/$','inmobiliaria.views.listInmueble',name='listInmueble'),
     url(r'^private/add/$','inmobiliaria.views.addInmueble',name='addInmueble'),

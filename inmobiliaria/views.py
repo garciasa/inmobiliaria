@@ -16,7 +16,7 @@ from django.forms.models import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.sites.models import Site
-from inmobiliaria.forms import SearchForm, AddForm, ImageForm, ContactForm, ActionForm, EnviarForm
+from inmobiliaria.forms import InmuebleSearchForm, AddForm, ImageForm, ContactForm, ActionForm, EnviarForm
 from inmobiliaria.models import Inmueble, Imagen
 
 
@@ -38,7 +38,7 @@ def compra(request):
     return render_to_response('compra_inmo.html',context_instance=RequestContext(request))
 
 def inmuebles(request):
-    form = SearchForm();
+    form = InmuebleSearchForm();
     casas_list = Inmueble.objects.all().filter(activo=True)
     paginator = Paginator(casas_list,3)
 
@@ -50,7 +50,7 @@ def inmuebles(request):
     except EmptyPage:
         casas = paginator.page(paginator.num_pages)
 
-    return render_to_response('inmuebles_inmo.html',{'form':form,
+    return render_to_response('search/search.html',{'form':form,
                                                      'casas':casas},context_instance=RequestContext(request))
 
 def descripcion_inmueble(request,id):
@@ -62,7 +62,7 @@ def descripcion_inmueble(request,id):
             casa = None
         
         if casa:  
-            form = SearchForm();     
+            form = InmuebleSearchForm();     
             imagenes = casa.imagen_set.all()    
             casa.visitas +=1
             casa.save()    
@@ -338,3 +338,18 @@ def logout_page(request):
     """
     logout(request)
     return HttpResponseRedirect('/')
+
+from haystack.views import SearchView
+
+class InmueblesSearchView(SearchView):
+        def __name__(self):
+                return "InmuebleSearchView"
+
+        def extra_context(self):
+                extra = super(InmueblesSearchView, self).extra_context()
+
+                extra['tipo'] = self.request.GET.get('tipo')
+                extra['provincia'] = self.request.GET.get('provincia')
+                extra['habitaciones'] = self.request.GET.get('habitaciones')
+
+                return extra

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     <!-- start: Page Title -->
     <div id="page-title">
 
@@ -33,6 +34,84 @@
                 </div>   
                 
                 <div class="span10">
+                     {% if query or page.object_list %}
+                        <div class="row-fluid">
+                            <div class="span3 offset1">
+                                <h3>Resultados de b&uacute;squeda:</h3>
+                            </div>
+                        </div>
+                        {%for c in page.object_list%}
+
+
+                            <div class="span3 {%if forloop.counter0 == 0%}offset1{%endif%}">
+                                <div class="picture">
+                                    <a href="{{ c.object.get_absolute_url }}" title="Title">
+                                        {% with c.object.imagen_set.all|first as image %}
+                                            <img width="300" height="318" src="{{ image.ruta|add:image.nombre }}-thumbnail.png" />
+                                        {% endwith %}
+                                        <div class="image-overlay-link"></div>
+                                    </a>
+                                    <div class="item-description alt">
+                                        <h4><a href="{{ c.object.get_absolute_url }}">{{c.object.descripcion}}</a></h4>
+                                        <p>
+                                                {% if c.object.tipo == 'A'%}
+                                                    <h2>Alquiler</h2>
+                                                {% else %}
+                                                    <h2>Venta</h2>
+                                                {%endif%}
+                                            <ul>
+                                                <li>Provincia: {% if c.object.provincia == '1' %}Madrid{%else%}Otra{%endif%}</li>    
+                                                <li>Localidad: {{c.object.localidad}}</li>
+                                                <li>Zona: {{c.object.zona}}</li>
+                                                <li>Metros: {{c.object.metros_casa}} m2</li>
+                                                <li>Dormitorios: {{c.object.habitaciones}}</li>
+                                            </ul>
+                                        </p>
+                                    </div>
+                                    <div class="post-meta">
+                                        <span><i class="mini-ico-calendar"></i>{{c.object.fecha_insert|date:'d/m/Y'}}</span>
+                                        <span><i class="mini-ico-eye-open"></i>{{c.object.visitas}} Visitas</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% empty %}
+                                <br>
+                                <div class="span10 offset3">
+                                    No tenemos inmuebles con esos parametros de busqueda
+                                </div>
+
+                            {% endfor %}
+
+                        {% if page.has_previous or page.has_next %}
+                        <div class="row-fluid">
+                            <div class="span10 offset1">
+                                <ul class="pagination">
+                                    {% if page.has_previous %}
+                                        <a href="?q={{ query }}&amp;tipo={{ tipo }}&amp;provincia={{ provincia }}&amp;habitaciones={{ habitaciones }}&amp;page={{ page.previous_page_number }}">
+                                            <li>Anterior</li>
+                                        </a>
+                                    {% endif %}
+
+                                    <li class="current">
+                                        P&aacute;gina {{ page.number }} de {{ page.paginator.num_pages }}
+                                    </li>
+
+                                    {% if page.has_next %}
+                                        
+                                        <a href="?q={{ query }}&amp;tipo={{ tipo }}&amp;provincia={{ provincia }}&amp;habitaciones={{ habitaciones }}&amp;page={{ page.next_page_number }}">
+                                            <li>Siguiente</li>
+                                        </a>
+                                    {% endif %}
+
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    {% else %}
+
                     {%for c in casas%}
 
 
@@ -75,8 +154,6 @@
 
                     {% endfor %}
             </div>
-            <!--end: Row-->
-            
             <div class="row">
                 <div class="span10 offset3">
                     <ul class="pagination">
@@ -95,6 +172,9 @@
                     </ul>
                 </div>
             </div>
+            {% endif %}
+            <!--end: Row-->
+            
         </div>
         </div>
         <!--end: Container-->
@@ -103,26 +183,3 @@
 
 {% endblock content %}
 
-
-{% block tail_script %}
-<script>
-$(document).ready(
-    function (){
-    $( "#slider-range" ).slider({
-      range: 'min',
-      value: 2,
-      min: 1,
-      max: 6,
-      slide: function( event, ui ) {
-        $("#id_habitaciones").val(ui.value);
-      }
-    });
-    $("#id_habitaciones").val($("#slider-range").slider("value") );
-    $('#slider-range').width(170);
-    $('#searchform').submit(function(){
-        alert('Deshabilitado de momento.\nDisculpe las molestias.')
-        return false;
-    });  
-  });
-</script>
-{% endblock tail_script%}

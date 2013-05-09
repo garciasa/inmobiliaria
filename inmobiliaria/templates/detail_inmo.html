@@ -34,15 +34,7 @@
             <div class="row">
         
                 <div class="span3">
-                     <form method="POST" id="searchform" action="{% url 'inmuebles' %}">
-                        {% csrf_token %}
-                        {% for f in form %}
-                            {{ f.label }}<br>{{ f }}<br>
-                        {% endfor %}
-                        <div id="slider-range"></div>
-                        <br>
-                        <input type="submit" value="Filtrar">
-                    </form>
+                    {% include 'search/searchbox.html' %}
                 </div>   
   
 
@@ -111,25 +103,9 @@
 <script type="text/javascript" src="/static/js/jquery.jcarousel.min.js"></script>
 <script type="text/javascript" src="/static/js/jquery.pikachoose.js"></script>
 <script>
-$(document).ready(
-                function (){
-    $( "#slider-range" ).slider({
-      range: 'min',
-      value: 2,
-      min: 1,
-      max: 6,
-      slide: function( event, ui ) {
-        $("#id_habitaciones").val(ui.value);
-      }
-    });
-    $("#id_habitaciones").val($("#slider-range").slider("value") );
-    $('#slider-range').width(170);  
-
+$(document).ready(function (){
     $("#pikame").PikaChoose();
-    $('#searchform').submit(function(){
-        alert('Deshabilitado de momento.\nDisculpe las molestias.')
-        return false;
-    });  
+  
   });
 
 </script>
